@@ -55,12 +55,36 @@
   <audio data-key="72" src="sounds/ride.wav"></audio>
   <audio data-key="74" src="sounds/snare.wav"></audio>
   <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+  <audio data-key="76" src="sounds/tink.wav"></audio> 
 
 <script>
 
-</script>
 
+
+function playSound(event) {
+    const audio = document.querySelector(`audio[data-key="${event.keyCode}"]`);
+    // adds animation when key is pressed
+    const key = document.querySelector(`.key[data-key="${event.keyCode}"]`);
+    // if there is no corresponding audio file to the key, stop running
+    if(!audio) return;
+    audio.currentTime = 0; // rewinds to start  
+    // plays audio
+    audio.play();
+    // adds the css for key pressed  
+    key.classList.add('playing');
+}
+
+
+function removeTransition(event) {
+  if(event.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+// Each key has an event listener added to it, which is transitionend. When a transition is ending, we will remove it
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
+</script>
 
 </body>
 </html>
